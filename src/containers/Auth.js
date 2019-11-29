@@ -3,22 +3,27 @@ import { Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react'
 import Cookies from '../../node_modules/js-cookie'
 import LoginForm from '../containers/LoginForm'
+import { connect } from 'react-redux';
+import { login } from '../action/auth'
 
-export default class Auth extends Component {
-state = {
-    loginess: false
-}
+
+class Auth extends Component {
+    state = {
+        loginess: false
+    }
+
     componentDidMount() {
         if (Cookies.get('passLogin')) {
-            this.setState({ loginess : true})
+            this.setState({ loginess: true });
+            this.props.login();
         }
         else {
-            this.setState({ loginess : false})
+            this.setState({ loginess: false })
         }
     }
 
     render() {
-        if (this.state.loginess) {
+        if (this.state.loginess && this.props.auth) {
             return this.props.children
         }
         else {
@@ -27,3 +32,10 @@ state = {
         }
     }
 }
+const mapStateToProps = (state) => ({
+    auth: state.auth
+})
+const mapDispatchToProps = {
+    login
+}
+export default connect(mapStateToProps , mapDispatchToProps)(Auth)

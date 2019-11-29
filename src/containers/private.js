@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import Cookies from '../../node_modules/js-cookie'
+import { exitAccount } from '../action/auth'
+import { connect } from 'react-redux';
 
-export default class Private extends Component {
+class Private extends Component {
     exit = () => {
         Cookies.remove('passLogin');
+        this.props.exitAccount();
     }
-   
+
     render() {
         return (
             <div>
@@ -14,3 +17,8 @@ export default class Private extends Component {
         )
     }
 }
+const mapDispatchToProps = {
+    exitAccount
+}
+
+export default connect(null, mapDispatchToProps)(Private)
